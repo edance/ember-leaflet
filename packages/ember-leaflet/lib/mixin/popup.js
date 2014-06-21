@@ -61,7 +61,7 @@ EmberLeaflet.PopupMixin = Ember.Mixin.create({
     this._popupView = this.get('popupViewClass').create({
       container: this.get('container'),
       controller: this.get('controller'),
-      context: this.get('controller')
+      context: this.get('content')
     });
     var self = this;
     this._popupView._insertElementLater(function() {
