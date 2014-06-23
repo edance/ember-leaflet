@@ -99,21 +99,11 @@ EmberLeaflet.MapView = Ember.View.extend(EmberLeaflet.ContainerLayerMixin, {
   move: function(e) {
     this.set('center', this._layer.getCenter());    
   },
-
-  zoomDidChange: Ember.observer(function() {
-    if(!this._layer || Ember.isNone(this.get('zoom'))) { return; }
-    if(this._layer._animatingZoom) {
-      this._queuedZoom = this.get('zoom');
-    } else {
-      this._layer.setZoom(this.get('zoom'));
-    }
-  }, 'zoom'),
   
-  centerDidChange: Ember.observer(function() {
-    if (!this._layer || this.get('isMoving') ||
-      !this.get('center')) { return; }
-    if (!this._layer.getCenter().equals(this.get('center'))) {
-      this._layer.panTo(this.get('center'));
-    }
-  }, 'center')
+  viewDidChange: Ember.observer(function() {
+    if (!this._layer || Em.isNone(get(this, "center")) || 
+      get(this, "isMoving") || get(this, "isZooming")) { return; }
+  
+      return this._layer.setView(get(this, "center"), get(this, "zoom"));
+    }, "zoom", "center")
 });
